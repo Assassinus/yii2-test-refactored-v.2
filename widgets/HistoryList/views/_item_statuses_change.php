@@ -1,15 +1,19 @@
 <?php
 
 use app\models\History;
+use app\models\User;
+use app\services\history\event\IEventService;
 
 /* @var $model History */
+/* @var $user User */
 /* @var $oldValue string */
 /* @var $newValue string */
 /* @var $content string */
+/* @var $eventService IEventService */
 ?>
 
     <div class="bg-success ">
-        <?php echo "$model->eventText " .
+        <?php echo $eventService->getText($model->event) . " " .
             "<span class='badge badge-pill badge-warning'>" . ($oldValue ?? "<i>not set</i>") . "</span>" .
             " &#8594; " .
             "<span class='badge badge-pill badge-success'>" . ($newValue ?? "<i>not set</i>") . "</span>";

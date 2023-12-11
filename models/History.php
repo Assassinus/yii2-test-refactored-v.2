@@ -33,26 +33,10 @@ class History extends ActiveRecord
 {
     use ObjectNameTrait;
 
-    const EVENT_CREATED_TASK = 'created_task';
-    const EVENT_UPDATED_TASK = 'updated_task';
-    const EVENT_COMPLETED_TASK = 'completed_task';
-
-    const EVENT_INCOMING_SMS = 'incoming_sms';
-    const EVENT_OUTGOING_SMS = 'outgoing_sms';
-
-    const EVENT_INCOMING_CALL = 'incoming_call';
-    const EVENT_OUTGOING_CALL = 'outgoing_call';
-
-    const EVENT_INCOMING_FAX = 'incoming_fax';
-    const EVENT_OUTGOING_FAX = 'outgoing_fax';
-
-    const EVENT_CUSTOMER_CHANGE_TYPE = 'customer_change_type';
-    const EVENT_CUSTOMER_CHANGE_QUALITY = 'customer_change_quality';
-
     /**
      * @inheritdoc
      */
-    public static function tableName()
+    public static function tableName(): string
     {
         return '{{%history}}';
     }
@@ -60,7 +44,7 @@ class History extends ActiveRecord
     /**
      * @inheritdoc
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['ins_ts'], 'safe'],
@@ -76,7 +60,7 @@ class History extends ActiveRecord
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'id' => Yii::t('app', 'ID'),
@@ -94,7 +78,7 @@ class History extends ActiveRecord
     /**
      * @return ActiveQuery
      */
-    public function getCustomer()
+    public function getCustomer(): ActiveQuery
     {
         return $this->hasOne(Customer::class, ['id' => 'customer_id']);
     }
@@ -102,90 +86,38 @@ class History extends ActiveRecord
     /**
      * @return ActiveQuery
      */
-    public function getUser()
+    public function getUser(): ActiveQuery
     {
         return $this->hasOne(User::class, ['id' => 'user_id']);
     }
 
     /**
-     * @return array
+     * @return ActiveQuery
      */
-    public static function getEventTexts()
+    public function getSms(): ActiveQuery
     {
-        return [
-            self::EVENT_CREATED_TASK => Yii::t('app', 'Task created'),
-            self::EVENT_UPDATED_TASK => Yii::t('app', 'Task updated'),
-            self::EVENT_COMPLETED_TASK => Yii::t('app', 'Task completed'),
-
-            self::EVENT_INCOMING_SMS => Yii::t('app', 'Incoming message'),
-            self::EVENT_OUTGOING_SMS => Yii::t('app', 'Outgoing message'),
-
-            self::EVENT_CUSTOMER_CHANGE_TYPE => Yii::t('app', 'Type changed'),
-            self::EVENT_CUSTOMER_CHANGE_QUALITY => Yii::t('app', 'Property changed'),
-
-            self::EVENT_OUTGOING_CALL => Yii::t('app', 'Outgoing call'),
-            self::EVENT_INCOMING_CALL => Yii::t('app', 'Incoming call'),
-
-            self::EVENT_INCOMING_FAX => Yii::t('app', 'Incoming fax'),
-            self::EVENT_OUTGOING_FAX => Yii::t('app', 'Outgoing fax'),
-        ];
+        return $this->hasOne(Sms::class, ['user_id' => 'user_id']);
     }
 
     /**
-     * @param $event
-     * @return mixed
+     * @return ActiveQuery
      */
-    public static function getEventTextByEvent($event)
+    public function getCall(): ActiveQuery
     {
-        return static::getEventTexts()[$event] ?? $event;
+        return $this->hasOne(Call::class, ['user_id' => 'user_id']);
     }
-
     /**
-     * @return mixed|string
+     * @return ActiveQuery
      */
-    public function getEventText()
+    public function getTask(): ActiveQuery
     {
-        return static::getEventTextByEvent($this->event);
+        return $this->hasOne(Task::class, ['user_id' => 'user_id']);
     }
-
-
     /**
-     * @param $attribute
-     * @return null
+     * @return ActiveQuery
      */
-    public function getDetailChangedAttribute($attribute)
+    public function getFax(): ActiveQuery
     {
-        $detail = json_decode($this->detail);
-        return isset($detail->changedAttributes->{$attribute}) ? $detail->changedAttributes->{$attribute} : null;
-    }
-
-    /**
-     * @param $attribute
-     * @return null
-     */
-    public function getDetailOldValue($attribute)
-    {
-        $detail = $this->getDetailChangedAttribute($attribute);
-        return isset($detail->old) ? $detail->old : null;
-    }
-
-    /**
-     * @param $attribute
-     * @return null
-     */
-    public function getDetailNewValue($attribute)
-    {
-        $detail = $this->getDetailChangedAttribute($attribute);
-        return isset($detail->new) ? $detail->new : null;
-    }
-
-    /**
-     * @param $attribute
-     * @return null
-     */
-    public function getDetailData($attribute)
-    {
-        $detail = json_decode($this->detail);
-        return isset($detail->data->{$attribute}) ? $detail->data->{$attribute} : null;
+        return $this->hasOne(Fax::class, ['user_id' => 'user_id']);
     }
 }

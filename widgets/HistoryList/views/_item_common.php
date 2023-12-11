@@ -6,9 +6,12 @@ use yii\helpers\Html;
 /* @var $user User */
 /* @var $body string */
 /* @var $footer string */
+/* @var $content string */
 /* @var $footerDatetime string */
 /* @var $bodyDatetime string */
 /* @var $iconClass string */
+/* @var $iconIncome string */
+
 ?>
 <?php echo Html::tag('i', '', ['class' => "icon icon-circle icon-main white $iconClass"]); ?>
 
@@ -34,7 +37,7 @@ use yii\helpers\Html;
 
 <?php if (isset($footer) || isset($footerDatetime)): ?>
     <div class="bg-warning">
-        <?php echo isset($footer) ? $footer : '' ?>
+        <?php echo $footer ?? '' ?>
         <?php if (isset($footerDatetime)): ?>
             <span><?= \app\widgets\DateTime\DateTime::widget(['dateTime' => $footerDatetime]) ?></span>
         <?php endif; ?>
