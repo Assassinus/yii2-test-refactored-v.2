@@ -7,7 +7,7 @@ use yii\base\InvalidConfigException;
 use yii\di\NotInstantiableException;
 use yii\web\View;
 
-class CsvStrategy extends View implements IExportStrategy
+class CsvStrategy implements IExportStrategy
 {
     public const FILE_NAME = 'history';
 
