@@ -48,6 +48,7 @@ class m191111_090949_init extends Migration
 
         $this->addForeignKey('fk_history__customer_id', 'history', 'customer_id', 'customer', 'id', 'RESTRICT', 'CASCADE');
         $this->addForeignKey('fk_history__user_id', 'history', 'user_id', 'user', 'id', 'RESTRICT', 'CASCADE');
+        $this->createIndex('history_object_id_index', '{{%history}}', 'object_id');
 
 
         $this->createTable('{{%call}}', [
