@@ -15,6 +15,7 @@ use yii\db\Exception;
  */
 class HistorySearch extends History implements IHistorySearch
 {
+    public const OPTIMAL_BATCH_SIZE = 1600;
     /**
      * @inheritdoc
      */
