@@ -1,11 +1,14 @@
-version: '2'
+version: '3.9'
 
 volumes:
   dbdata_mysql_maria:
+  redis_data:
 
 services:
   php:
-    image: yiisoftware/yii2-php:7.1-apache
+    build:
+      context: .
+      dockerfile: Dockerfile
     volumes:
       - ~/.composer-docker/cache:/root/.composer/cache:delegated
       - ./:/app:delegated
@@ -25,4 +28,4 @@ services:
     volumes:
       - "dbdata_mysql_maria:/var/lib/mysql"
     ports:
-      - 127.0.0.1:3503:3306
+      - "127.0.0.1:3503:3306"
