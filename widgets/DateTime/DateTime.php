@@ -15,7 +15,7 @@ class DateTime extends Widget
      * @return string
      * @throws Exception
      */
-    public function run()
+    public function run(): string
     {
         return
             Html::tag('i', '', ['class' => "icon glyphicon glyphicon-time"]) . " " .

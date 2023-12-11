@@ -46,7 +46,7 @@ class Task extends ActiveRecord
     /**
      * @inheritdoc
      */
-    public static function tableName()
+    public static function tableName(): string
     {
         return '{{%task}}';
     }
@@ -54,7 +54,7 @@ class Task extends ActiveRecord
     /**
      * @inheritdoc
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['user_id', 'title'], 'required'],
@@ -69,7 +69,7 @@ class Task extends ActiveRecord
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'id' => Yii::t('app', 'ID'),
@@ -88,7 +88,7 @@ class Task extends ActiveRecord
     /**
      * @return ActiveQuery
      */
-    public function getCustomer()
+    public function getCustomer(): ActiveQuery
     {
         return $this->hasOne(Customer::class, ['id' => 'customer_id']);
     }
@@ -96,7 +96,7 @@ class Task extends ActiveRecord
     /**
      * @return ActiveQuery
      */
-    public function getUser()
+    public function getUser(): ActiveQuery
     {
         return $this->hasOne(User::class, ['id' => 'user_id']);
     }
@@ -104,7 +104,7 @@ class Task extends ActiveRecord
     /**
      * @return array
      */
-    public static function getStatusTexts()
+    public static function getStatusTexts(): array
     {
         return [
             self::STATUS_NEW => Yii::t('app', 'New'),
@@ -117,7 +117,7 @@ class Task extends ActiveRecord
      * @param $value
      * @return int|mixed
      */
-    public function getStatusTextByValue($value)
+    public function getStatusTextByValue($value): mixed
     {
         return self::getStatusTexts()[$value] ?? $value;
     }
@@ -125,7 +125,7 @@ class Task extends ActiveRecord
     /**
      * @return mixed|string
      */
-    public function getStatusText()
+    public function getStatusText(): mixed
     {
         return self::getStatusTextByValue($this->status);
     }
@@ -133,7 +133,7 @@ class Task extends ActiveRecord
     /**
      * @return array
      */
-    public static function getStateTexts()
+    public static function getStateTexts(): array
     {
         return [
             self::STATE_INBOX => Yii::t('app', 'Inbox'),
@@ -145,7 +145,7 @@ class Task extends ActiveRecord
     /**
      * @return mixed
      */
-    public function getStateText()
+    public function getStateText(): mixed
     {
         return self::getStateTexts()[$this->state] ?? $this->state;
     }
@@ -154,7 +154,7 @@ class Task extends ActiveRecord
     /**
      * @return bool
      */
-    public function getIsOverdue()
+    public function getIsOverdue(): bool
     {
         return $this->status !== self::STATUS_DONE && strtotime($this->due_date) < time();
     }
@@ -162,7 +162,7 @@ class Task extends ActiveRecord
     /**
      * @return bool
      */
-    public function getIsDone()
+    public function getIsDone(): bool
     {
         return $this->status == self::STATUS_DONE;
     }
