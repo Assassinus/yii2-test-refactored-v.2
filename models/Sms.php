@@ -49,7 +49,7 @@ class Sms extends ActiveRecord
     /**
      * @inheritdoc
      */
-    public static function tableName()
+    public static function tableName(): string
     {
         return '{{%sms}}';
     }
@@ -57,7 +57,7 @@ class Sms extends ActiveRecord
     /**
      * @inheritdoc
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['phone_to', 'direction'], 'required'],
@@ -73,7 +73,7 @@ class Sms extends ActiveRecord
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'id' => Yii::t('app', 'ID'),
@@ -95,7 +95,7 @@ class Sms extends ActiveRecord
     /**
      * @return ActiveQuery
      */
-    public function getCustomer()
+    public function getCustomer(): ActiveQuery
     {
         return $this->hasOne(Customer::class, ['id' => 'customer_id']);
     }
@@ -103,7 +103,7 @@ class Sms extends ActiveRecord
     /**
      * @return ActiveQuery
      */
-    public function getUser()
+    public function getUser(): ActiveQuery
     {
         return $this->hasOne(User::class, ['id' => 'user_id']);
     }
@@ -111,7 +111,7 @@ class Sms extends ActiveRecord
     /**
      * @return array
      */
-    public static function getStatusTexts()
+    public static function getStatusTexts(): array
     {
         return [
             self::STATUS_NEW => Yii::t('app', 'New'),
@@ -129,7 +129,7 @@ class Sms extends ActiveRecord
      * @param $value
      * @return mixed
      */
-    public static function getStatusTextByValue($value)
+    public static function getStatusTextByValue($value): mixed
     {
         return self::getStatusTexts()[$value] ?? $value;
     }
@@ -137,7 +137,7 @@ class Sms extends ActiveRecord
     /**
      * @return mixed|string
      */
-    public function getStatusText()
+    public function getStatusText(): mixed
     {
         return self::getStatusTextByValue($this->status);
     }
@@ -145,7 +145,7 @@ class Sms extends ActiveRecord
     /**
      * @return array
      */
-    public static function getDirectionTexts()
+    public static function getDirectionTexts(): array
     {
         return [
             self::DIRECTION_INCOMING => Yii::t('app', 'Incoming'),
@@ -157,7 +157,7 @@ class Sms extends ActiveRecord
      * @param $value
      * @return mixed
      */
-    public static function getDirectionTextByValue($value)
+    public static function getDirectionTextByValue($value): mixed
     {
         return self::getDirectionTexts()[$value] ?? $value;
     }
@@ -165,7 +165,7 @@ class Sms extends ActiveRecord
     /**
      * @return mixed|string
      */
-    public function getDirectionText()
+    public function getDirectionText(): mixed
     {
         return self::getDirectionTextByValue($this->direction);
     }
