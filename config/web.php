@@ -1,5 +1,17 @@
 <?php
 
+use app\components\export\ExportStrategyFactory;
+use app\components\export\IExportStrategyFactory;
+use app\components\history\EventViewFactory;
+use app\components\history\HistoryListRenderer;
+use app\components\history\IEventViewFactory;
+use app\models\search\HistorySearch;
+use app\models\search\IHistorySearch;
+use app\services\history\detail\DetailService;
+use app\services\history\detail\IDetailService;
+use app\services\history\event\EventService;
+use app\services\history\event\IEventService;
+
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
 
@@ -10,8 +22,19 @@ $config = [
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
+        '@historyList' => '@app/widgets/HistoryList/views'
     ],
     'name' => 'Americor Test',
+    'container'  => [
+        'definitions' => [
+            IDetailService::class         => DetailService::class,
+            IEventService::class          => EventService::class,
+            IEventViewFactory::class      => EventViewFactory::class,
+            IExportStrategyFactory::class => ExportStrategyFactory::class,
+            IHistorySearch::class         => HistorySearch::class,
+            HistoryListRenderer::class    => HistoryListRenderer::class,
+        ],
+    ],
     'components' => [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
@@ -43,20 +66,17 @@ $config = [
                 ],
             ],
         ],
-        'db' => $db,
-        /*
-        'urlManager' => [
+        'db'           => $db,
+        'urlManager'   => [
+            'class'           => 'yii\web\UrlManager',
+            'showScriptName'  => false,
             'enablePrettyUrl' => true,
-            'showScriptName' => false,
-            'rules' => [
-            ],
+            'rules'           => array(
+                '<controller:\w+>/<id:\d+>'              => '<controller>/view',
+                '<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
+                '<controller:\w+>/<action:\w+>'          => '<controller>/<action>',
+            ),
         ],
-        */
-    ],
-    'modules' => [
-        'gridview' => [
-            'class' => '\kartik\grid\Module'
-        ]
     ],
     'params' => $params,
 ];
