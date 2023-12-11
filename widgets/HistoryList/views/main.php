@@ -1,6 +1,7 @@
 <?php
 
-use app\models\search\HistorySearch;
+use app\components\history\EventViewFactory;
+use app\services\history\event\IEventService;
 use yii\data\ActiveDataProvider;
 use yii\helpers\Html;
 use yii\widgets\ListView;
@@ -8,9 +9,8 @@ use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
 /* @var $dataProvider ActiveDataProvider */
-/* @var $model HistorySearch */
 /* @var $linkExport string */
-
+/* @var $eventService IEventService */
 ?>
 
 <?php Pjax::begin(['id' => 'grid-pjax', 'formSelector' => false]); ?>
@@ -33,10 +33,18 @@ use yii\widgets\Pjax;
 </div>
 
 <?php echo ListView::widget([
-    'dataProvider' => $dataProvider,
-    'itemView' => '_item',
-    'options' => [
-        'tag' => 'ul',
+    'dataProvider'     => $dataProvider,
+    'itemView'         => function ($history) use ($eventService) {
+        $eventViewFactory = new EventViewFactory($history);
+        $itemView = $eventViewFactory->createView($history->event);
+
+        return $itemView->render([
+            'user' => $history->user,
+            'body' => $eventService->getBodyByEventType($history)
+        ]);
+    },
+    'options'          => [
+        'tag'   => 'ul',
         'class' => 'list-group'
     ],
     'itemOptions' => [
